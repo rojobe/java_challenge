@@ -4,7 +4,6 @@ import com.java.challenge.java_challenge.entity.User;
 import com.java.challenge.java_challenge.error.Error;
 import com.java.challenge.java_challenge.error.ErrorResponseException;
 import com.java.challenge.java_challenge.service.UserService;
-import com.java.challenge.java_challenge.to.SignUpResponseTO;
 import com.java.challenge.java_challenge.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
