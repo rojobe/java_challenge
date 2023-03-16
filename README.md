@@ -84,8 +84,9 @@
   http://localhost:8080/users/rodrigobenito
   ```
   ```
-  header: token 
-  value: el valor de token devuelto por el enpoint /login
+  Para poder utilizar los recursos del sistema se debe enviar el valor del token en el header de la request  
+  KEY: token 
+  VALUE: el valor de token devuelto por el endpoint /login
    ```
   ###### Response si el token es valido:
   ```
