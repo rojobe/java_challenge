@@ -8,6 +8,21 @@
   ```
   http://localhost:8080/sign-up
   ```
+  
+  '''
+  {
+    "username": "rodrigobenito",
+    "email": "rodrigobenito@mail.com",
+    "password": "a2asfGf6",
+    "phones": [
+        {
+        "number": 111222333,
+        "cityCode": 261,
+        "countryCode": "MDZ"
+        }
+    ]
+}
+'''
   ###### Response:
   ```
 {
