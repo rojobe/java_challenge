@@ -9,7 +9,7 @@
   http://localhost:8080/sign-up
   ```
   
-  '''
+  ```
   {
     "username": "rodrigobenito",
     "email": "rodrigobenito@mail.com",
@@ -22,7 +22,7 @@
         }
     ]
 }
-'''
+```
   ###### Response:
   ```
 {
