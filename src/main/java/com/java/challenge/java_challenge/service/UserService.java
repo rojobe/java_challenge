@@ -12,4 +12,7 @@ public interface UserService {
 
     User getUser(String username);
 
+    User getUserByEmail(String email);
+
+
 }
