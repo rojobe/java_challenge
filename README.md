@@ -130,7 +130,7 @@ en la siguiente URL: http://localhost:8080/h2-console.
 1. Navegar hasta la carpeta raiz
 1. Ejecutar el siguiente código:  /.gradlew bootRun
 1. Esto lanzará la tarea de correr el servicio para poder ser utilizado en la url http://localhost:8080
-1. A través de un navegador ya podemos comenzar a utilizar los servicios propuestos anteriormente utilizando la URL: http://localhost:8090/
+1. A través de alguna herramienta como Postman ya podemos comenzar a utilizar los servicios propuestos anteriormente utilizando la URL: http://localhost:8090/ como punto de entrada a las request
 
 ### Ejecución de unit test
 1. En la carpeta raiz ejecutar el comando: ./gradlew build 

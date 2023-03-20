@@ -22,10 +22,6 @@ public class JwtTokenUtil implements Serializable {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    public String getEmailfromToken(String token){
-        return getClaimFromToken(token, Claims::getSubject);
-    }
-
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
@@ -37,12 +33,10 @@ public class JwtTokenUtil implements Serializable {
 
     public String generateToken(String username, String email) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", username);
-        claims.put("email", email);
         return Jwts
                 .builder()
                 .setClaims(claims)
-                .setSubject(email)
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(key)
                 .compact();
