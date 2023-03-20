@@ -4,6 +4,7 @@ import com.java.challenge.java_challenge.entity.User;
 import com.java.challenge.java_challenge.error.Error;
 import com.java.challenge.java_challenge.error.ErrorResponseException;
 import com.java.challenge.java_challenge.service.UserService;
+import com.java.challenge.java_challenge.to.SearchTO;
 import com.java.challenge.java_challenge.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,11 +50,11 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
-    public ResponseEntity<?> getUser(@PathVariable("username") String username, @RequestHeader String token) {
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public ResponseEntity<?> searchUser(@RequestBody SearchTO searchTO, @RequestHeader String token) {
         try {
-            if (username.equalsIgnoreCase(jwtTokenUtil.getUsernameFromToken(token))) {
-                return ResponseEntity.ok(userService.getUser(username));
+            if (searchTO.getEmail().equalsIgnoreCase(jwtTokenUtil.getEmailFromToken(token))) {
+                return ResponseEntity.ok(userService.getUserByEmail(searchTO.getEmail()));
             } else {
                 Error userNotFound = new Error();
                 userNotFound.setTimeStamp(LocalDate.now());
