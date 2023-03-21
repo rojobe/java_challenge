@@ -78,11 +78,16 @@
 }
   ```
   
-  ##### Obtener un usuario a través de su nombre de usuario
-  ###### GET Request /users/{nombredeusuario}:
+  ##### Obtener un usuario a través de su email
+  ###### POST Request /search:
   ```
-  http://localhost:8080/users/rodrigobenito
+  http://localhost:8080/search
   ```
+ ```
+{
+  "email": "rodrigobenito@mail.com"
+}
+```
   ```
   Para poder utilizar los recursos del sistema se debe enviar el valor del token en el header de la request  
   KEY: token 
