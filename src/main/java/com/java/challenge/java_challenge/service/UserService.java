@@ -10,8 +10,8 @@ public interface UserService {
 
     User getUserByUsernameAndPassword(String name, String password) throws ErrorResponseException;
 
-    User getUser(String username);
+    User getUserByUsername(String username);
 
-    User getUserByEmail(String email);
+    User getUserByEmail(String email) throws ErrorResponseException;;
 
 }

@@ -35,9 +35,8 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    public String generateToken(String username, String email) {
+    public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", username);
         claims.put("email", email);
         return Jwts
                 .builder()

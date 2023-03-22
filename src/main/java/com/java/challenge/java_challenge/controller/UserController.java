@@ -12,35 +12,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class UserController {
 
-    @Autowired
     private UserService userService;
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    JwtTokenUtil jwtTokenUtil;
-
+    public UserController(UserService userService, JwtTokenUtil jwtTokenUtil){
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
     public ResponseEntity<Object> signUpUser(@RequestBody User user){
         try{
             User userResult = userService.createUser(user);
-             return ResponseEntity.ok(userResult);
+            return ResponseEntity.ok(userResult);
         }catch(ErrorResponseException errorResponseException){
             return new ResponseEntity<>(errorResponseException.getErrorList(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> loginUser(@RequestBody User user) {
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ResponseEntity<?> loginUser(@RequestHeader String token) {
         try {
 
-            User userData = userService.getUserByUsernameAndPassword(user.getUsername(), user.getPassword());
+            User userData = userService.getUserByEmail(jwtTokenUtil.getEmailFromToken(token));
 
             return new ResponseEntity<>(userData, HttpStatus.OK);
 

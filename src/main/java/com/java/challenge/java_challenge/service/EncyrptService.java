@@ -4,6 +4,6 @@ public interface EncyrptService {
 
     String encrypt(String stringToEncrypt);
 
-    String decrypt(String stringToDescrypt);
+    String decrypt(String stringToDecrypt);
 
 }

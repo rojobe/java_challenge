@@ -1,6 +1,8 @@
 package com.java.challenge.java_challenge.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -22,6 +24,8 @@ public class User {
 
     @Column(name = "EMAIL")
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "PASSWORD")
     private String password;
 
@@ -32,10 +36,8 @@ public class User {
     private LocalDate created;
 
     @Column(name = "LASTLOGIN")
-
     private LocalDate lastLogin;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Transient
+
     private String token;
 
     @OneToMany(cascade = CascadeType.ALL)

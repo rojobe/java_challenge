@@ -13,23 +13,37 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+    private RegularExpresionService regularExpresionService;
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    RegularExpresionService regularExpresionService;
+    public UserServiceImpl (UserRepository userRepository, RegularExpresionService regularExpresionService, JwtTokenUtil jwtTokenUtil){
+        this.userRepository = userRepository;
+        this.regularExpresionService = regularExpresionService;
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
 
-    @Autowired
-    JwtTokenUtil jwtTokenUtil;
 
     @Override
     public User createUser(User user) throws ErrorResponseException {
         List<Error> errorList = new ArrayList<>();
+
+        if(userRepository.findByEmail(user.getEmail()) != null){
+            Error emailAlreadyExist = new Error();
+            emailAlreadyExist.setTimeStamp(LocalDate.now());
+            emailAlreadyExist.setCodigo(409);
+            emailAlreadyExist.setDetail("Email already registered");
+            errorList.add(emailAlreadyExist);
+            ErrorResponseException errorResponseTO = new ErrorResponseException();
+            errorResponseTO.setErrorList(errorList);
+            throw errorResponseTO;
+        }
+
         if(user.getPassword() == null || user.getPassword().isEmpty()){
             Error emptyPasswordError = new Error();
             emptyPasswordError.setTimeStamp(LocalDate.now());
@@ -68,6 +82,8 @@ public class UserServiceImpl implements UserService {
         user.setLastLogin(LocalDate.now());
         user.setActive(true);
         User userResult = userRepository.save(user);
+        String token = jwtTokenUtil.generateToken(user.getEmail());
+        userResult.setToken(token);
         userResult.setId(userResult.getId());
         return userResult;
 
@@ -94,20 +110,39 @@ public class UserServiceImpl implements UserService {
         user.setCreated(LocalDate.now());
         user.setLastLogin(LocalDate.now());
         user.setActive(true);
-        String token = jwtTokenUtil.generateToken(user.getUsername(), user.getEmail());
+        String token = jwtTokenUtil.generateToken(user.getEmail());
         user.setToken(token);
 
         return user;
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUserByUsername(String username) {
+
         return userRepository.findByUsername(username);
+
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getUserByEmail(String email) throws ErrorResponseException {
+        List<Error> errorList = new ArrayList<>();
+        User user = userRepository.findByEmail(email);
+        if(user == null){
+            Error userNotFoundError = new Error();
+            userNotFoundError.setTimeStamp(LocalDate.now());
+            userNotFoundError.setCodigo(204);
+            userNotFoundError.setDetail("User not found");
+            errorList.add(userNotFoundError);
+        }
+
+        if(!errorList.isEmpty()){
+            ErrorResponseException errorResponseTO = new ErrorResponseException();
+            errorResponseTO.setErrorList(errorList);
+            throw errorResponseTO;
+        }
+        String token = jwtTokenUtil.generateToken(user.getEmail());
+        user.setToken(token);
+        return user;
     }
 
 

@@ -1,5 +1,6 @@
 package com.java.challenge.java_challenge.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -23,6 +24,8 @@ public class Phone {
     @Column(name = "COUNTRY_CODE")
     private String countryCode;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Transient
     @Column(name = "USER_ID")
     private String userId;
 
