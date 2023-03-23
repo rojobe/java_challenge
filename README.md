@@ -32,6 +32,7 @@
     "password": "a2asfGf6",
     "created": "2023-03-16",
     "lastLogin": "2023-03-16",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InJvZHJpZ29iZW5pdG8zM0BtYWlsLmNvbSIsInN1YiI6InJvZHJpZ29iZW5pdG8zM0BtYWlsLmNvbSIsImlhdCI6MTY3OTU4MjI5N30.y8V36DDSDk6Vrdyb-Dv0JAhUYI0T6WJy5YGe1200GY4",
     "phones": [
         {
             "id": "cf804470-a87c-4791-8ecf-f723c187a22b",
@@ -50,33 +51,38 @@
   http://localhost:8080/login
   ```
   ```
-  {
-    "username": "rodrigobenito",
-    "password": "a2asfGf6"
-  }
-  ```
-  ###### Response:
+  Para poder utilizar los recursos del sistema se debe enviar el valor del token en el header de la request  sign-up
+  KEY: token 
+  VALUE: el valor de token devuelto por el endpoint /login
+   ```
+  ###### Response si el token es valido:
   ```
 {
     "id": "136845db-4887-47c8-a69f-94d05886375e",
     "username": "rodrigobenito",
     "email": "rodrigobenito@mail.com",
-    "password": "a2asfGf6",
     "created": "2023-03-16",
     "lastLogin": "2023-03-16",
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2RyaWdvYmVuaXRvIiwiaWF0IjoxNjc4OTg3Mzc1fQ.QSmrR2dJi6fTE04oVo76ble7wy_IpRYyB7xxiEQvSbo",
     "phones": [
         {
             "id": "cf804470-a87c-4791-8ecf-f723c187a22b",
             "number": 111222333,
             "cityCode": 261,
             "countryCode": "MDZ",
-            "userId": "136845db-4887-47c8-a69f-94d05886375e"
         }
     ],
     "active": true
+}  
+```
+###### Response si el token es invalido:
+```
+{
+    "timeStamp": "2023-03-16",
+    "codigo": 401,
+    "detail": "You are not authorized"
 }
-  ```
+```
+
   
   ##### Obtener un usuario a través de su email
   ###### POST Request /search:
@@ -99,7 +105,6 @@
     "id": "136845db-4887-47c8-a69f-94d05886375e",
     "username": "rodrigobenito",
     "email": "rodrigobenito@mail.com",
-    "password": "a2asfGf6",
     "created": "2023-03-16",
     "lastLogin": "2023-03-16",
     "phones": [
@@ -108,7 +113,6 @@
             "number": 111222333,
             "cityCode": 261,
             "countryCode": "MDZ",
-            "userId": "136845db-4887-47c8-a69f-94d05886375e"
         }
     ],
     "active": true
