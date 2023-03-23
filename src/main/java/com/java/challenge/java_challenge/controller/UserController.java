@@ -52,6 +52,18 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/login-password", method = RequestMethod.GET)
+    public ResponseEntity<?> loginUserWithPassword(@RequestBody User user) {
+        try {
+
+            return new ResponseEntity<>(userService.login(user.getEmail(), user.getPassword()), HttpStatus.OK);
+
+        } catch (ErrorResponseException errorResponseException) {
+
+            return new ResponseEntity<>(errorResponseException.getErrorList(), HttpStatus.CONFLICT);
+        }
+    }
+
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ResponseEntity<?> searchUser(@RequestBody SearchTO searchTO, @RequestHeader String token) {
         try {

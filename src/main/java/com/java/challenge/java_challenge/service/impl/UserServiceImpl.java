@@ -154,5 +154,22 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User login(String email, String password) throws ErrorResponseException {
+        User userData = getUserByEmail(email);
+        if(userData != null && passwordEncoder.matches(password, userData.getPassword())){
+            return userData;
+        }
+        List<Error> errorList = new ArrayList<>();
+        Error incorrectPassword = new Error();
+        incorrectPassword.setTimeStamp(LocalDate.now());
+        incorrectPassword.setCodigo(409);
+        incorrectPassword.setDetail("Password does not match");
+        errorList.add(incorrectPassword);
+        ErrorResponseException errorResponseTO = new ErrorResponseException();
+        errorResponseTO.setErrorList(errorList);
+        throw errorResponseTO;
+    }
+
 
 }

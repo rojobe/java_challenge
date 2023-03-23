@@ -14,4 +14,6 @@ public interface UserService {
 
     User getUserByEmail(String email) throws ErrorResponseException;;
 
+    User login(String email, String password) throws ErrorResponseException;
+
 }
