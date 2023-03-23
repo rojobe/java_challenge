@@ -8,6 +8,8 @@ import com.java.challenge.java_challenge.service.UserService;
 import com.java.challenge.java_challenge.error.Error;
 import com.java.challenge.java_challenge.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,11 +23,17 @@ public class UserServiceImpl implements UserService {
     private RegularExpresionService regularExpresionService;
     private JwtTokenUtil jwtTokenUtil;
 
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserServiceImpl (UserRepository userRepository, RegularExpresionService regularExpresionService, JwtTokenUtil jwtTokenUtil){
+    public UserServiceImpl (UserRepository userRepository,
+                            RegularExpresionService regularExpresionService,
+                            JwtTokenUtil jwtTokenUtil,
+                            PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.regularExpresionService = regularExpresionService;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -81,6 +89,7 @@ public class UserServiceImpl implements UserService {
         user.setCreated(LocalDate.now());
         user.setLastLogin(LocalDate.now());
         user.setActive(true);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userResult = userRepository.save(user);
         String token = jwtTokenUtil.generateToken(user.getEmail());
         userResult.setToken(token);
