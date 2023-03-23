@@ -1,6 +1,6 @@
 ## El presente repositorio presenta una solución a la necesidad de registrar un usuario, autenticar un usuario creado y validar que un usuario tenga un token valido a la hora de realizar operaciones en el sistema
 
-### La API propuesta se construyó utilizando el framework Spring Boot v2.7.10-SNAPSHOT y provee 3 servicios 
+### La API propuesta se construyó utilizando el framework Spring Boot v2.7.10 y provee 3 servicios 
 
   ##### Creacion de un usuario
   
