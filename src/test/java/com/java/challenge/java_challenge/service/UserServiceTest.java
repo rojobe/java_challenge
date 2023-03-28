@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static com.java.challenge.java_challenge.utils.UserUtils.getUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -38,10 +39,7 @@ class UserServiceTest {
 
     @Test
     void createUser() {
-        User user = new User();
-        user.setUsername("rodrigobenito");
-        user.setEmail("rodrigobenito@mail.com");
-        user.setPassword("a2asfGf6");
+        User user = getUser();
 
         when(repository.save(user)).thenReturn(user);
 
@@ -52,14 +50,14 @@ class UserServiceTest {
     @Test
     void login() {
 
-        User user = new User();
-        user.setEmail("rodrigobenito@mail.com");
+        User user = getUser();
+
         when(repository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         Optional<User> userFound = repository.findByEmail(user.getEmail());
         assertThat(userFound.get()).isNotNull();
     }
 
-    /*
+
 
     @Test
     void getUserByUsernameAndPassword() {
@@ -68,17 +66,14 @@ class UserServiceTest {
         user.setEmail("rodrigobenito@mail.com");
         user.setPassword("a2asfGf6");
 
-        when(repository.findByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
-        User userFound = repository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+        when(repository.findByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(Optional.of(user));
+        Optional<User> userFound = repository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
         assertThat(userFound).isEqualTo(user);
     }
-*/
+
     @Test
     void getUserByEmail() {
-        User user = new User();
-        user.setUsername("rodrigobenito");
-        user.setEmail("rodrigobenito@mail.com");
-        user.setPassword("a2asfGf6");
+        User user = getUser();
 
         when(repository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         Optional<User> userFound = repository.findByEmail(user.getEmail());
