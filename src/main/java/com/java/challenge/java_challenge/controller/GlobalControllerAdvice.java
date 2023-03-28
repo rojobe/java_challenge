@@ -1,6 +1,7 @@
 package com.java.challenge.java_challenge.controller;
 
 import com.java.challenge.java_challenge.error.ErrorMessage;
+import com.java.challenge.java_challenge.error.IncorrectFormatException;
 import com.java.challenge.java_challenge.error.InvalidAccessException;
 import com.java.challenge.java_challenge.error.RepositoryException;
 import io.jsonwebtoken.security.SignatureException;
@@ -75,6 +76,17 @@ public class GlobalControllerAdvice {
                   .build();
 
           return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+     }
+
+     @ExceptionHandler(IncorrectFormatException.class)
+     public ResponseEntity<ErrorMessage> incorrectFormat(IncorrectFormatException incorrectFormatException){
+          ErrorMessage errorMessage = ErrorMessage.builder()
+                  .timeStamp(LocalDate.now())
+                  .code(incorrectFormatException.getCode())
+                  .detailMessage(incorrectFormatException.getMessage())
+                  .build();
+
+          return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
      }
 
 }

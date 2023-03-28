@@ -2,6 +2,7 @@ package com.java.challenge.java_challenge.service.impl;
 
 import com.java.challenge.java_challenge.dto.UserDTO;
 import com.java.challenge.java_challenge.entity.User;
+import com.java.challenge.java_challenge.error.IncorrectFormatException;
 import com.java.challenge.java_challenge.error.InvalidAccessException;
 import com.java.challenge.java_challenge.error.RepositoryException;
 import com.java.challenge.java_challenge.repository.UserRepository;
@@ -25,7 +26,6 @@ public class UserServiceImpl implements UserService {
     private final RegularExpresionService regularExpresionService;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
-    //private final ExceptionMessageConfig exceptionMessageConfig;
     private final ModelMapper mapper;
 
     public UserServiceImpl (UserRepository userRepository,
@@ -50,6 +50,21 @@ public class UserServiceImpl implements UserService {
             throw new RepositoryException(
                     HttpStatus.CONFLICT.toString(),
                     "Email already registered",
+                    HttpStatus.CONFLICT
+            );
+        }
+        if(!regularExpresionService.regexEmail(userDTO.getEmail())){
+            throw new IncorrectFormatException(
+                    HttpStatus.BAD_REQUEST.toString(),
+                    "Email has an incorrect format",
+                    HttpStatus.CONFLICT
+            );
+        }
+
+        if(!regularExpresionService.regexPassword(userDTO.getPassword())){
+            throw new IncorrectFormatException(
+                    HttpStatus.BAD_REQUEST.toString(),
+                    "Password has an incorrect format",
                     HttpStatus.CONFLICT
             );
         }

@@ -33,7 +33,7 @@ class JavaChallengeApplicationTests {
 	}
 
 	@Test
-	void saveUser() throws RepositoryException {
+	void saveUser(){
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername("rodrigobenito");
 		userDTO.setEmail("rodrigobenito@mail.com");
@@ -45,7 +45,7 @@ class JavaChallengeApplicationTests {
 
 	}
 
-	/*
+
 
 	@Test
 	void saveUserIncorrectEmailFormat() throws RepositoryException {
@@ -67,7 +67,7 @@ class JavaChallengeApplicationTests {
 	 * consecutivos), en combinación de letras minúsculas, largo máximo de 12 y mínimo 8
 	 * @throws RepositoryException
 	 */
-	/*@Test
+	@Test
 	void saveUserIncorrectPasswordFormat() throws RepositoryException {
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername("rodrigobenito");
