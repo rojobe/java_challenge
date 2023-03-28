@@ -1,10 +1,11 @@
 package com.java.challenge.java_challenge.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
@@ -25,9 +26,6 @@ public class Phone {
     @Column(name = "COUNTRY_CODE")
     private String countryCode;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "USER_ID")
-    private String userId;
 
     public UUID getId() {
         return id;
@@ -60,15 +58,6 @@ public class Phone {
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
 
 
 }

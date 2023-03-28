@@ -1,7 +1,5 @@
 package com.java.challenge.java_challenge.service;
 
-import java.util.regex.Pattern;
-
 public interface RegularExpresionService {
 
     String PASS_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,12}$"; //example: a2asfGf6

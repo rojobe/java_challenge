@@ -1,6 +1,7 @@
-package com.java.challenge.java_challenge.entity;
+package com.java.challenge.java_challenge.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.java.challenge.java_challenge.entity.Phone;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -9,38 +10,25 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "USERS")
-public class User {
+public class UserDTO {
 
-    @Id
-    @Column(name = "ID")
-    @Type(type = "uuid-char")
     private UUID id = UUID.randomUUID();
 
-    @Column(name = "USERNAME")
     private String username;
 
-    @Column(name = "EMAIL")
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "ISACTIVE")
     private boolean isActive;
 
-    @Column(name = "CREATED")
     private LocalDate created;
 
-    @Column(name = "LASTLOGIN")
     private LocalDate lastLogin;
 
     private String token;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private Set<Phone> phones;
 
     public UUID getId() {
@@ -55,8 +43,8 @@ public class User {
         return username;
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -73,14 +61,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Phone> getPhones() {
-        return phones;
-    }
-
-    public void setPhones(Set<Phone> phones) {
-        this.phones = phones;
     }
 
     public boolean isActive() {
@@ -113,5 +93,13 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Set<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(Set<Phone> phones) {
+        this.phones = phones;
     }
 }

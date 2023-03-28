@@ -1,14 +1,14 @@
 package com.java.challenge.java_challenge.service.impl;
 
+import com.java.challenge.java_challenge.dto.UserDTO;
 import com.java.challenge.java_challenge.entity.User;
+import com.java.challenge.java_challenge.error.Error;
 import com.java.challenge.java_challenge.error.ErrorResponseException;
 import com.java.challenge.java_challenge.repository.UserRepository;
 import com.java.challenge.java_challenge.service.RegularExpresionService;
 import com.java.challenge.java_challenge.service.UserService;
-import com.java.challenge.java_challenge.error.Error;
 import com.java.challenge.java_challenge.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +19,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private RegularExpresionService regularExpresionService;
-    private JwtTokenUtil jwtTokenUtil;
+    private final UserRepository userRepository;
+    private final RegularExpresionService regularExpresionService;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final PasswordEncoder passwordEncoder;
 
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     public UserServiceImpl (UserRepository userRepository,
                             RegularExpresionService regularExpresionService,
                             JwtTokenUtil jwtTokenUtil,
@@ -38,10 +36,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User createUser(User user) throws ErrorResponseException {
+    public UserDTO createUser(UserDTO userDTO) throws ErrorResponseException {
         List<Error> errorList = new ArrayList<>();
 
-        if(userRepository.findByEmail(user.getEmail()) != null){
+        if(userRepository.findByEmail(userDTO.getEmail()) != null){
             Error emailAlreadyExist = new Error();
             emailAlreadyExist.setTimeStamp(LocalDate.now());
             emailAlreadyExist.setCodigo(409);
@@ -52,13 +50,13 @@ public class UserServiceImpl implements UserService {
             throw errorResponseTO;
         }
 
-        if(user.getPassword() == null || user.getPassword().isEmpty()){
+        if(userDTO.getPassword() == null || userDTO.getPassword().isEmpty()){
             Error emptyPasswordError = new Error();
             emptyPasswordError.setTimeStamp(LocalDate.now());
             emptyPasswordError.setCodigo(500);
             emptyPasswordError.setDetail("Password can not be empty");
             errorList.add(emptyPasswordError);
-        }else if(!regularExpresionService.regexPassword(user.getPassword())){
+        }else if(!regularExpresionService.regexPassword(userDTO.getPassword())){
             Error regexPasswordError = new Error();
             regexPasswordError.setTimeStamp(LocalDate.now());
             regexPasswordError.setCodigo(500);
@@ -66,13 +64,13 @@ public class UserServiceImpl implements UserService {
             errorList.add(regexPasswordError);
         }
 
-        if(user.getEmail() == null || user.getEmail().isEmpty()){
+        if(userDTO.getEmail() == null || userDTO.getEmail().isEmpty()){
             Error emptyEmailerror = new Error();
             emptyEmailerror.setTimeStamp(LocalDate.now());
             emptyEmailerror.setCodigo(500);
             emptyEmailerror.setDetail("Email can not be empty");
             errorList.add(emptyEmailerror);
-        }else if(!regularExpresionService.regexEmail(user.getEmail())){
+        }else if(!regularExpresionService.regexEmail(userDTO.getEmail())){
             Error regexEmailerror = new Error();
             regexEmailerror.setTimeStamp(LocalDate.now());
             regexEmailerror.setCodigo(500);
@@ -85,21 +83,27 @@ public class UserServiceImpl implements UserService {
             errorResponseTO.setErrorList(errorList);
             throw errorResponseTO;
         }
-
+        userDTO.setActive(true);
+        userDTO.setCreated(LocalDate.now());
+        userDTO.setLastLogin(LocalDate.now());
+        User user = new User();
         user.setCreated(LocalDate.now());
         user.setLastLogin(LocalDate.now());
         user.setActive(true);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User userResult = userRepository.save(user);
-        String token = jwtTokenUtil.generateToken(user.getEmail());
-        userResult.setToken(token);
-        userResult.setId(userResult.getId());
-        return userResult;
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setEmail(userDTO.getEmail());
+        user.setUsername(userDTO.getUsername());
+        user.setPhones(userDTO.getPhones());
+        userRepository.save(user);
+        String token = jwtTokenUtil.generateToken(userDTO.getEmail());
+        userDTO.setToken(token);
+        userDTO.setId(user.getId());
+        return userDTO;
 
     }
 
     @Override
-    public User getUserByUsernameAndPassword(String username, String password) throws ErrorResponseException {
+    public UserDTO getUserByUsernameAndPassword(String username, String password) throws ErrorResponseException {
         List<Error> errorList = new ArrayList<>();
         User user = userRepository.findByUsernameAndPassword(username, password);
         if(user == null){
@@ -116,24 +120,21 @@ public class UserServiceImpl implements UserService {
             throw errorResponseTO;
         }
 
-        user.setCreated(LocalDate.now());
-        user.setLastLogin(LocalDate.now());
-        user.setActive(true);
         String token = jwtTokenUtil.generateToken(user.getEmail());
-        user.setToken(token);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setToken(token);
+        userDTO.setActive(user.isActive());
+        userDTO.setCreated(user.getCreated());
+        userDTO.setPhones(user.getPhones());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setId(user.getId());
+        userDTO.setLastLogin(user.getLastLogin());
 
-        return user;
+        return userDTO;
     }
 
     @Override
-    public User getUserByUsername(String username) {
-
-        return userRepository.findByUsername(username);
-
-    }
-
-    @Override
-    public User getUserByEmail(String email) throws ErrorResponseException {
+    public UserDTO getUserByEmail(String email) throws ErrorResponseException {
         List<Error> errorList = new ArrayList<>();
         User user = userRepository.findByEmail(email);
         if(user == null){
@@ -150,13 +151,22 @@ public class UserServiceImpl implements UserService {
             throw errorResponseTO;
         }
         String token = jwtTokenUtil.generateToken(user.getEmail());
-        user.setToken(token);
-        return user;
+        UserDTO userDTO = new UserDTO();
+        userDTO.setToken(token);
+        userDTO.setUsername(user.getUsername());
+        userDTO.setActive(user.isActive());
+        userDTO.setCreated(user.getCreated());
+        userDTO.setPhones(user.getPhones());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setId(user.getId());
+        userDTO.setLastLogin(user.getLastLogin());
+
+        return userDTO;
     }
 
     @Override
-    public User login(String email, String password) throws ErrorResponseException {
-        User userData = getUserByEmail(email);
+    public UserDTO login(String email, String password) throws ErrorResponseException {
+        UserDTO userData = getUserByEmail(email);
         if(userData != null && passwordEncoder.matches(password, userData.getPassword())){
             return userData;
         }

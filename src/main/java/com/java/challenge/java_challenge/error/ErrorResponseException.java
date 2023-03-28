@@ -2,7 +2,7 @@ package com.java.challenge.java_challenge.error;
 
 import java.util.List;
 
-public class ErrorResponseException extends Exception{
+public class ErrorResponseException extends RuntimeException{
 
     private List<Error> errorList;
 

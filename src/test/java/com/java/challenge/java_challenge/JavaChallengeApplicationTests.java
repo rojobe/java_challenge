@@ -1,5 +1,6 @@
 package com.java.challenge.java_challenge;
 
+import com.java.challenge.java_challenge.dto.UserDTO;
 import com.java.challenge.java_challenge.entity.User;
 import com.java.challenge.java_challenge.error.ErrorResponseException;
 import com.java.challenge.java_challenge.repository.UserRepository;
@@ -33,29 +34,29 @@ class JavaChallengeApplicationTests {
 
 	@Test
 	void saveUser() throws ErrorResponseException {
-		User user = new User();
-		user.setUsername("rodrigobenito");
-		user.setEmail("rodrigobenito@mail.com");
-		user.setPassword("a2asfGf6");
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername("rodrigobenito");
+		userDTO.setEmail("rodrigobenito@mail.com");
+		userDTO.setPassword("a2asfGf6");
 
-		when(service.createUser(user)).thenReturn(user);
+		when(service.createUser(userDTO)).thenReturn(userDTO);
 
-		assertThat(service.createUser(user)).isEqualTo(user);
+		assertThat(service.createUser(userDTO)).isEqualTo(userDTO);
 
 	}
 
 	@Test
 	void saveUserIncorrectEmailFormat() throws ErrorResponseException {
-		User user = new User();
-		user.setUsername("rodrigobenito");
-		user.setEmail("rodrigobenito@");
-		user.setPassword("a2asfGf6");
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername("rodrigobenito");
+		userDTO.setEmail("rodrigobenito@");
+		userDTO.setPassword("a2asfGf6");
 
 		ErrorResponseException exceptionError = new ErrorResponseException();
 
-		doThrow(new ErrorResponseException()).when(service).createUser(user);
+		doThrow(new ErrorResponseException()).when(service).createUser(userDTO);
 
-		assertThrows(ErrorResponseException.class, ()->service.createUser(user));
+		assertThrows(ErrorResponseException.class, ()->service.createUser(userDTO));
 
 	}
 
@@ -65,30 +66,30 @@ class JavaChallengeApplicationTests {
 	 * @throws ErrorResponseException
 	 */	@Test
 	void saveUserIncorrectPasswordFormat() throws ErrorResponseException {
-		User user = new User();
-		user.setUsername("rodrigobenito");
-		user.setEmail("rodrigobenito@mail.com");
-		user.setPassword("a2aHsfGf6"); // el password contiene 2 mayusculas
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername("rodrigobenito");
+		userDTO.setEmail("rodrigobenito@mail.com");
+		userDTO.setPassword("a2aHsfGf6"); // el password contiene 2 mayusculas
 
 		ErrorResponseException exceptionError = new ErrorResponseException();
 
-		doThrow(new ErrorResponseException()).when(service).createUser(user);
+		doThrow(new ErrorResponseException()).when(service).createUser(userDTO);
 
-		assertThrows(ErrorResponseException.class, ()->service.createUser(user));
+		assertThrows(ErrorResponseException.class, ()->service.createUser(userDTO));
 
 	}
 
 
 	@Test
 	void loginOK() throws ErrorResponseException {
-		User user = new User();
-		user.setUsername("rodrigobenito");
-		user.setEmail("rodrigobenito@mail.com");
-		user.setPassword("a2asfGf6");
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername("rodrigobenito");
+		userDTO.setEmail("rodrigobenito@mail.com");
+		userDTO.setPassword("a2asfGf6");
 
-		when(service.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
+		when(service.getUserByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword())).thenReturn(userDTO);
 
-		assertThat(service.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).isEqualTo(user);
+		assertThat(service.getUserByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword())).isEqualTo(userDTO);
 
 	}
 

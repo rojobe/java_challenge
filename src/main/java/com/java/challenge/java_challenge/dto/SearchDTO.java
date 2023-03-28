@@ -1,6 +1,6 @@
-package com.java.challenge.java_challenge.to;
+package com.java.challenge.java_challenge.dto;
 
-public class SearchTO {
+public class SearchDTO {
 
     private String username;
 

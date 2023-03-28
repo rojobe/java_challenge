@@ -1,19 +1,16 @@
 package com.java.challenge.java_challenge.service;
 
+import com.java.challenge.java_challenge.dto.UserDTO;
 import com.java.challenge.java_challenge.entity.User;
 import com.java.challenge.java_challenge.error.ErrorResponseException;
 
-import java.util.Optional;
-
 public interface UserService {
-    User createUser(User user) throws ErrorResponseException;
+    UserDTO createUser(UserDTO userDTO) throws ErrorResponseException;
 
-    User getUserByUsernameAndPassword(String name, String password) throws ErrorResponseException;
+    UserDTO getUserByUsernameAndPassword(String name, String password) throws ErrorResponseException;
 
-    User getUserByUsername(String username);
+    UserDTO getUserByEmail(String email) throws ErrorResponseException;;
 
-    User getUserByEmail(String email) throws ErrorResponseException;;
-
-    User login(String email, String password) throws ErrorResponseException;
+    UserDTO login(String email, String password) throws ErrorResponseException;
 
 }

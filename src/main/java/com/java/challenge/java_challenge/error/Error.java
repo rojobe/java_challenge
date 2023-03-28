@@ -1,7 +1,5 @@
 package com.java.challenge.java_challenge.error;
 
-import org.springframework.http.HttpStatus;
-
 import java.time.LocalDate;
 
 public class Error {
