@@ -1,6 +1,5 @@
 package com.java.challenge.java_challenge.util;
 
-import com.java.challenge.java_challenge.error.ErrorMessage;
 import com.java.challenge.java_challenge.error.RepositoryException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.security.Key;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
 
@@ -26,24 +24,7 @@ public class JwtTokenUtil implements Serializable {
 
 
     public String getEmailFromToken(String token) throws RepositoryException {
-
-        //try {
             return getClaimFromToken(token, Claims::getSubject);
-            /*
-
-        }catch(Exception exception){
-            List<ErrorMessage> errorMessageList = new ArrayList<>();
-            ErrorMessage notAuthorized = new ErrorMessage();
-            notAuthorized.setTimeStamp(LocalDate.now());
-            notAuthorized.setCodigo(401);
-            notAuthorized.setDetail("You are not authorized");
-            errorMessageList.add(notAuthorized);
-            RepositoryException errorResponseTO = new RepositoryException();
-            errorResponseTO.setErrorList(errorMessageList);
-            throw errorResponseTO;
-        }
-
-             */
     }
 
 

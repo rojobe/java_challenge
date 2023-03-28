@@ -1,7 +1,7 @@
 package com.java.challenge.java_challenge.controller;
 
-import com.java.challenge.java_challenge.config.ExceptionMessageConfig;
 import com.java.challenge.java_challenge.error.ErrorMessage;
+import com.java.challenge.java_challenge.error.InvalidAccessException;
 import com.java.challenge.java_challenge.error.RepositoryException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ import java.time.LocalDate;
 public class GlobalControllerAdvice {
 
 
-     private final ExceptionMessageConfig exceptionMessageConfig;
 
      @ExceptionHandler(RepositoryException.class)
      public ResponseEntity<ErrorMessage> repositoryException(RepositoryException repositoryException){
@@ -65,6 +64,17 @@ public class GlobalControllerAdvice {
                   .build();
 
           return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+     }
+
+     @ExceptionHandler(InvalidAccessException.class)
+     public ResponseEntity<ErrorMessage> incorrectPasswordException(InvalidAccessException invalidAccessException){
+          ErrorMessage errorMessage = ErrorMessage.builder()
+                  .timeStamp(LocalDate.now())
+                  .code(invalidAccessException.getCode())
+                  .detailMessage(invalidAccessException.getMessage())
+                  .build();
+
+          return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
      }
 
 }

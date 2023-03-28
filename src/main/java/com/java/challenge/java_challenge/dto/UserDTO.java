@@ -17,6 +17,7 @@ import java.util.UUID;
 @Data
 public class UserDTO {
 
+    @Builder.Default
     private UUID id = UUID.randomUUID();
 
     private String username;

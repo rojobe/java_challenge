@@ -1,9 +1,8 @@
 package com.java.challenge.java_challenge.service.impl;
 
-import com.java.challenge.java_challenge.config.ExceptionMessageConfig;
 import com.java.challenge.java_challenge.dto.UserDTO;
 import com.java.challenge.java_challenge.entity.User;
-import com.java.challenge.java_challenge.error.ErrorMessage;
+import com.java.challenge.java_challenge.error.InvalidAccessException;
 import com.java.challenge.java_challenge.error.RepositoryException;
 import com.java.challenge.java_challenge.repository.UserRepository;
 import com.java.challenge.java_challenge.service.RegularExpresionService;
@@ -16,8 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -28,20 +25,18 @@ public class UserServiceImpl implements UserService {
     private final RegularExpresionService regularExpresionService;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
-    private final ExceptionMessageConfig exceptionMessageConfig;
+    //private final ExceptionMessageConfig exceptionMessageConfig;
     private final ModelMapper mapper;
 
     public UserServiceImpl (UserRepository userRepository,
                             RegularExpresionService regularExpresionService,
                             JwtTokenUtil jwtTokenUtil,
                             PasswordEncoder passwordEncoder,
-                            ExceptionMessageConfig exceptionMessageConfig,
                             ModelMapper mapper){
         this.userRepository = userRepository;
         this.regularExpresionService = regularExpresionService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.passwordEncoder = passwordEncoder;
-        this.exceptionMessageConfig = exceptionMessageConfig;
         this.mapper = mapper;
     }
 
@@ -75,6 +70,41 @@ public class UserServiceImpl implements UserService {
         return userDTO;
 
     }
+
+
+    @Override
+    public UserDTO login(String email, String password) throws InvalidAccessException {
+
+        UserDTO userData = getUserByEmail(email);
+        if(userData != null && passwordEncoder.matches(password, userData.getPassword())){
+            return userData;
+        }else{
+            throw new InvalidAccessException(
+                    HttpStatus.CONFLICT.toString(),
+                    "Incorrect Password",
+                    HttpStatus.CONFLICT);
+        }
+    }
+
+    @Override
+    public UserDTO getUserByEmail(String email) throws RepositoryException {
+        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    throw new RepositoryException(
+                            HttpStatus.CONFLICT.toString(),
+                            "Email not registered",
+                            HttpStatus.CONFLICT
+                    );
+                }));
+
+
+        UserDTO userDTO = mapper.map(user.get(), UserDTO.class);
+        userDTO.setToken(jwtTokenUtil.generateToken(userDTO.getEmail()));
+
+        return userDTO;
+    }
+
+
 
     /*
     @Override
@@ -111,43 +141,8 @@ public class UserServiceImpl implements UserService {
 
     */
 
-    @Override
-    public UserDTO getUserByEmail(String email) throws RepositoryException {
-        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    throw new RepositoryException(
-                            HttpStatus.CONFLICT.toString(),
-                            "Email not found",
-                            HttpStatus.CONFLICT
-                    );
-                }));
 
 
-        UserDTO userDTO = mapper.map(user.get(), UserDTO.class);
-        userDTO.setToken(jwtTokenUtil.generateToken(userDTO.getEmail()));
-
-        return userDTO;
-    }
-    /*
-
-    @Override
-    public UserDTO login(String email, String password) throws RepositoryException {
-        UserDTO userData = getUserByEmail(email);
-        if(userData != null && passwordEncoder.matches(password, userData.getPassword())){
-            return userData;
-        }
-        List<ErrorMessage> errorMessageList = new ArrayList<>();
-        ErrorMessage incorrectPassword = new ErrorMessage();
-        incorrectPassword.setTimeStamp(LocalDate.now());
-        incorrectPassword.setCodigo(409);
-        incorrectPassword.setDetail("Password does not match");
-        errorMessageList.add(incorrectPassword);
-        RepositoryException errorResponseTO = new RepositoryException();
-        errorResponseTO.setErrorList(errorMessageList);
-        throw errorResponseTO;
-    }
-
-     */
 
 
 }

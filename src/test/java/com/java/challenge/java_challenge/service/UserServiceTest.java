@@ -1,6 +1,6 @@
 package com.java.challenge.java_challenge.service;
 
-import com.java.challenge.java_challenge.config.ExceptionMessageConfig;
+//import com.java.challenge.java_challenge.config.ExceptionMessageConfig;
 import com.java.challenge.java_challenge.entity.User;
 import com.java.challenge.java_challenge.repository.UserRepository;
 import com.java.challenge.java_challenge.service.impl.RegularExpresionImpl;
@@ -27,7 +27,7 @@ class UserServiceTest {
 
     private PasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    private ExceptionMessageConfig exceptionMessageConfig;
+    //private ExceptionMessageConfig exceptionMessageConfig;
 
     private ModelMapper mapper;
 
@@ -36,7 +36,7 @@ class UserServiceTest {
             regularExpresionService,
             jwtTokenUtil,
             bCryptPasswordEncoder,
-            exceptionMessageConfig,
+            //exceptionMessageConfig,
             mapper);
 
     @Test
@@ -51,6 +51,17 @@ class UserServiceTest {
         assertThat(repository.save(user)).isEqualTo(user);
 
     }
+
+    @Test
+    void login() {
+
+        User user = new User();
+        user.setEmail("rodrigobenito@mail.com");
+        when(repository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        Optional<User> userFound = repository.findByEmail(user.getEmail());
+        assertThat(userFound.get()).isNotNull();
+    }
+
     /*
 
     @Test
@@ -77,18 +88,9 @@ class UserServiceTest {
         assertThat(userFound.get()).isEqualTo(user);
 
     }
-    /*
 
-    @Test
-    void login() {
 
-        User user = new User();
 
-        when(repository.findByEmail(user.getEmail())).thenReturn(user);
-        User userFound = repository.findByEmail(user.getEmail());
-        assertThat(userFound).isNotNull();
-    }
 
-     */
 
 }
