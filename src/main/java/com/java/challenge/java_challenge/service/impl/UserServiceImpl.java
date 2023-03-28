@@ -104,45 +104,4 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 
-
-
-    /*
-    @Override
-    public UserDTO getUserByUsernameAndPassword(String username, String password) throws RepositoryException {
-        List<ErrorMessage> errorMessageList = new ArrayList<>();
-        Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
-
-        if(user == null){
-            ErrorMessage userNotFoundErrorMessage = new ErrorMessage();
-            userNotFoundErrorMessage.setTimeStamp(LocalDate.now());
-            userNotFoundErrorMessage.setCodigo("204");
-            userNotFoundErrorMessage.setDetailMessage("UserName or Password is Invalid");
-            errorMessageList.add(userNotFoundErrorMessage);
-        }
-
-        if(!errorMessageList.isEmpty()){
-            RepositoryException errorResponseTO = new RepositoryException();
-            errorResponseTO.setErrorList(errorMessageList);
-            throw errorResponseTO;
-        }
-
-        String token = jwtTokenUtil.generateToken(user.getEmail());
-        UserDTO userDTO = new UserDTO();
-        userDTO.setToken(token);
-        userDTO.setActive(user.isActive());
-        userDTO.setCreated(user.getCreated());
-        userDTO.setPhones(user.getPhones());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setId(user.getId());
-        userDTO.setLastLogin(user.getLastLogin());
-
-        return userDTO;
-    }
-
-    */
-
-
-
-
-
 }

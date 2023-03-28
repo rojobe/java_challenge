@@ -1,6 +1,5 @@
 package com.java.challenge.java_challenge.service;
 
-//import com.java.challenge.java_challenge.config.ExceptionMessageConfig;
 import com.java.challenge.java_challenge.entity.User;
 import com.java.challenge.java_challenge.repository.UserRepository;
 import com.java.challenge.java_challenge.service.impl.RegularExpresionImpl;
@@ -27,7 +26,6 @@ class UserServiceTest {
 
     private PasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    //private ExceptionMessageConfig exceptionMessageConfig;
 
     private ModelMapper mapper;
 
@@ -36,7 +34,6 @@ class UserServiceTest {
             regularExpresionService,
             jwtTokenUtil,
             bCryptPasswordEncoder,
-            //exceptionMessageConfig,
             mapper);
 
     @Test

@@ -15,7 +15,7 @@ public class SecurityConfig {
         return http.cors().disable()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/users/**")
+                .antMatchers("/v1/user/**")
                 .permitAll()
                 .and()
                 .authorizeHttpRequests()

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+@RequestMapping("/v1/user")
 @RestController
 public class UserController {
 
@@ -34,34 +35,4 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByEmail(jwtTokenUtil.getEmailFromToken(token)));
     }
 
-
-
-
-
-
-    /*
-
-    @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> searchUser(@RequestBody SearchDTO searchDTO, @RequestHeader String token) {
-        try {
-            if (searchDTO.getEmail().equalsIgnoreCase(jwtTokenUtil.getEmailFromToken(token))) {
-                return ResponseEntity.ok(userService.getUserByEmail(searchDTO.getEmail()));
-            } else {
-                ErrorMessage userNotFound = new ErrorMessage();
-                userNotFound.setTimeStamp(LocalDate.now());
-                userNotFound.setCodigo(204);
-                userNotFound.setDetail("User not found");
-                return new ResponseEntity<>(userNotFound, HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            ErrorMessage notAuthorized = new ErrorMessage();
-            notAuthorized.setTimeStamp(LocalDate.now());
-            notAuthorized.setCodigo(401);
-            notAuthorized.setDetail("You are not authorized");
-            return new ResponseEntity<>(notAuthorized, HttpStatus.UNAUTHORIZED);
-        }
-
-    }
-
-     */
 }
