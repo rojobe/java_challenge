@@ -1,7 +1,7 @@
 package com.java.challenge.java_challenge.util;
 
-import com.java.challenge.java_challenge.error.Error;
-import com.java.challenge.java_challenge.error.ErrorResponseException;
+import com.java.challenge.java_challenge.error.ErrorMessage;
+import com.java.challenge.java_challenge.error.RepositoryException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,22 +23,29 @@ public class JwtTokenUtil implements Serializable {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    public String getEmailFromToken(String token) throws ErrorResponseException {
 
-        try {
+
+    public String getEmailFromToken(String token) throws RepositoryException {
+
+        //try {
             return getClaimFromToken(token, Claims::getSubject);
+            /*
+
         }catch(Exception exception){
-            List<Error> errorList = new ArrayList<>();
-            Error notAuthorized = new Error();
+            List<ErrorMessage> errorMessageList = new ArrayList<>();
+            ErrorMessage notAuthorized = new ErrorMessage();
             notAuthorized.setTimeStamp(LocalDate.now());
             notAuthorized.setCodigo(401);
             notAuthorized.setDetail("You are not authorized");
-            errorList.add(notAuthorized);
-            ErrorResponseException errorResponseTO = new ErrorResponseException();
-            errorResponseTO.setErrorList(errorList);
+            errorMessageList.add(notAuthorized);
+            RepositoryException errorResponseTO = new RepositoryException();
+            errorResponseTO.setErrorList(errorMessageList);
             throw errorResponseTO;
         }
+
+             */
     }
+
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);

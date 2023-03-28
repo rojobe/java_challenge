@@ -3,8 +3,8 @@ package com.java.challenge.java_challenge.controller;
 import com.java.challenge.java_challenge.dto.SearchDTO;
 import com.java.challenge.java_challenge.dto.UserDTO;
 import com.java.challenge.java_challenge.entity.User;
-import com.java.challenge.java_challenge.error.Error;
-import com.java.challenge.java_challenge.error.ErrorResponseException;
+import com.java.challenge.java_challenge.error.ErrorMessage;
+import com.java.challenge.java_challenge.error.RepositoryException;
 import com.java.challenge.java_challenge.service.UserService;
 import com.java.challenge.java_challenge.util.JwtTokenUtil;
 import org.springframework.http.HttpStatus;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+
 
 @RestController
 public class UserController {
@@ -25,31 +26,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    //@RequestMapping(value = "/sign-up", method = RequestMethod.POST)
     @PostMapping(value = "/sign-up", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> signUpUser(@RequestBody UserDTO userDTO){//TODO retornar ResponseEntity<UserDTO>
-        try{
-            UserDTO userResult = userService.createUser(userDTO);
-            return ResponseEntity.ok(userResult);
-        }catch(ErrorResponseException errorResponseException){//TODO Implementar ControllerAdvice
-            return new ResponseEntity<>(errorResponseException.getErrorList(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<UserDTO> signUpUser(@RequestBody UserDTO userDTO){
+        return ResponseEntity.ok(userService.createUser(userDTO));
     }
-
 
     @GetMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> loginUser(@RequestHeader String token) {//TODO retornar DTO
-        try {
-
-            UserDTO userData = userService.getUserByEmail(jwtTokenUtil.getEmailFromToken(token));
-
-            return new ResponseEntity<>(userData, HttpStatus.OK);
-
-        } catch (ErrorResponseException errorResponseException) {
-
-            return new ResponseEntity<>(errorResponseException.getErrorList(), HttpStatus.CONFLICT);
-        }
+    public ResponseEntity<UserDTO> loginUser(@RequestHeader String token) {
+        return ResponseEntity.ok(userService.getUserByEmail(jwtTokenUtil.getEmailFromToken(token)));
     }
+
+    /*
 
     @GetMapping(value = "/login-password", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> loginUserWithPassword(@RequestBody User user) {//TODO Convertir a userDTO - retornar ResponseEntity<UserDTO>
@@ -57,9 +44,9 @@ public class UserController {
 
             return new ResponseEntity<>(userService.login(user.getEmail(), user.getPassword()), HttpStatus.OK);
 
-        } catch (ErrorResponseException errorResponseException) {
+        } catch (RepositoryException repositoryException) {
 
-            return new ResponseEntity<>(errorResponseException.getErrorList(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(repositoryException.getErrorList(), HttpStatus.CONFLICT);
         }
     }
 
@@ -69,14 +56,14 @@ public class UserController {
             if (searchDTO.getEmail().equalsIgnoreCase(jwtTokenUtil.getEmailFromToken(token))) {
                 return ResponseEntity.ok(userService.getUserByEmail(searchDTO.getEmail()));
             } else {
-                Error userNotFound = new Error();
+                ErrorMessage userNotFound = new ErrorMessage();
                 userNotFound.setTimeStamp(LocalDate.now());
                 userNotFound.setCodigo(204);
                 userNotFound.setDetail("User not found");
                 return new ResponseEntity<>(userNotFound, HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
-            Error notAuthorized = new Error();
+            ErrorMessage notAuthorized = new ErrorMessage();
             notAuthorized.setTimeStamp(LocalDate.now());
             notAuthorized.setCodigo(401);
             notAuthorized.setDetail("You are not authorized");
@@ -84,4 +71,6 @@ public class UserController {
         }
 
     }
+
+     */
 }

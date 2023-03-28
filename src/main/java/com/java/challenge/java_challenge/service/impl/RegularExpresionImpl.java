@@ -1,10 +1,11 @@
 package com.java.challenge.java_challenge.service.impl;
 
 import com.java.challenge.java_challenge.service.RegularExpresionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
-
+@Slf4j
 @Service
 public class RegularExpresionImpl implements RegularExpresionService {
 
