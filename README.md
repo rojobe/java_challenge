@@ -4,9 +4,9 @@
 
   ##### Creacion de un usuario
   
-  ###### POST Request /sign-up: 
+  ###### POST Request /v1/user/sign-up: 
   ```
-  http://localhost:8080/sign-up
+  http://localhost:8080/v1/user/sign-up
   ```
   
   ```
@@ -45,10 +45,10 @@
     "active": true
 }
   ```
-  ##### Login de un usuario creado
-  ###### PÖST Request /login:
+  ##### Login de un usuario creado utilizando token
+  ###### PÖST Request /login-by-token:
   ```
-  http://localhost:8080/login
+  http://localhost:8080/v1/user/login-by-token
   ```
   ```
   Para poder utilizar los recursos del sistema se debe enviar el valor del token en el header de la request  sign-up
@@ -85,21 +85,18 @@
 
   
   ##### Obtener un usuario a través de su email
-  ###### POST Request /search:
+  ###### GET Request /v1/user/login:
   ```
-  http://localhost:8080/search
+  http://localhost:8080/v1/user/login
   ```
  ```
 {
   "email": "rodrigobenito@mail.com"
+  "password": "a2asfGf6"
 }
 ```
-  ```
-  Para poder utilizar los recursos del sistema se debe enviar el valor del token en el header de la request  
-  KEY: token 
-  VALUE: el valor de token devuelto por el endpoint /login
-   ```
-  ###### Response si el token es valido:
+
+  ###### Response si el email coindide con un usuario del sistema y el password matchea:
   ```
 {
     "id": "136845db-4887-47c8-a69f-94d05886375e",
@@ -117,14 +114,6 @@
     ],
     "active": true
 }  
-```
-###### Response si el token es invalido:
-```
-{
-    "timeStamp": "2023-03-16",
-    "codigo": 401,
-    "detail": "You are not authorized"
-}
 ```
 
 
