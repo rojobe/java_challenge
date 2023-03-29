@@ -44,40 +44,6 @@ public class GlobalControllerAdvice {
           return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
      }
 
-     @ExceptionHandler(IllegalArgumentException.class)
-     public ResponseEntity<ErrorMessage> passwordNullException(){
-          ErrorMessage errorMessage = ErrorMessage.builder()
-                  .timeStamp(LocalDate.now())
-                  .code(HttpStatus.BAD_REQUEST.toString())
-                  .detailMessage("Password can't be empty")
-                  .build();
-
-          return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-     }
-
-
-     @ExceptionHandler(SignatureException.class)
-     public ResponseEntity<ErrorMessage> tokenException(SignatureException signatureException){
-          ErrorMessage errorMessage = ErrorMessage.builder()
-                  .timeStamp(LocalDate.now())
-                  .code(HttpStatus.UNAUTHORIZED.toString())
-                  .detailMessage(signatureException.getMessage())
-                  .build();
-
-          return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
-     }
-
-     @ExceptionHandler(InvalidAccessException.class)
-     public ResponseEntity<ErrorMessage> incorrectPasswordException(InvalidAccessException invalidAccessException){
-          ErrorMessage errorMessage = ErrorMessage.builder()
-                  .timeStamp(LocalDate.now())
-                  .code(invalidAccessException.getCode())
-                  .detailMessage(invalidAccessException.getMessage())
-                  .build();
-
-          return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
-     }
-
      @ExceptionHandler(IncorrectFormatException.class)
      public ResponseEntity<ErrorMessage> incorrectFormat(IncorrectFormatException incorrectFormatException){
           ErrorMessage errorMessage = ErrorMessage.builder()
