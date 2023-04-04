@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
@@ -14,14 +15,14 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Datagit
 public class UserDTO {
 
     @Builder.Default
     private UUID id = UUID.randomUUID();
 
     private String username;
-
+    @NotNull
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
