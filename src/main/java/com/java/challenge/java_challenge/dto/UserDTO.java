@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Datagit
+@Data
 public class UserDTO {
 
     @Builder.Default
