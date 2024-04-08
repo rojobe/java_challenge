@@ -2,7 +2,7 @@ package com.java.challenge.java_challenge.service;
 
 import com.java.challenge.java_challenge.entity.User;
 import com.java.challenge.java_challenge.repository.UserRepository;
-import com.java.challenge.java_challenge.service.impl.RegularExpresionImpl;
+import com.java.challenge.java_challenge.service.impl.ValidatorServiceImpl;
 import com.java.challenge.java_challenge.service.impl.UserServiceImpl;
 import com.java.challenge.java_challenge.util.JwtTokenUtil;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class UserServiceTest {
 
     private UserRepository repository = mock(UserRepository.class);
 
-    private RegularExpresionService regularExpresionService = new RegularExpresionImpl();
+    private ValidatorService validatorService = new ValidatorServiceImpl();
 
     private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 
@@ -32,7 +32,7 @@ class UserServiceTest {
 
 
     private UserService service = new UserServiceImpl(repository,
-            regularExpresionService,
+            validatorService,
             jwtTokenUtil,
             bCryptPasswordEncoder,
             mapper);

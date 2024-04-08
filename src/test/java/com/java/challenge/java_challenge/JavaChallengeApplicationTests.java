@@ -1,14 +1,13 @@
 package com.java.challenge.java_challenge;
 
 import com.java.challenge.java_challenge.dto.UserDTO;
-import com.java.challenge.java_challenge.entity.User;
 import com.java.challenge.java_challenge.error.IncorrectFormatException;
 import com.java.challenge.java_challenge.error.RepositoryException;
 import com.java.challenge.java_challenge.repository.UserRepository;
 
 import static com.java.challenge.java_challenge.utils.UserUtils.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import com.java.challenge.java_challenge.service.impl.RegularExpresionImpl;
+import com.java.challenge.java_challenge.service.impl.ValidatorServiceImpl;
 import com.java.challenge.java_challenge.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -27,7 +26,7 @@ class JavaChallengeApplicationTests {
 	UserServiceImpl service;
 
 	@Spy
-	RegularExpresionImpl regexService;
+    ValidatorServiceImpl regexService;
 
 	@Mock
 	UserRepository repository;

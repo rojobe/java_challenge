@@ -6,7 +6,7 @@ import com.java.challenge.java_challenge.error.IncorrectFormatException;
 import com.java.challenge.java_challenge.error.InvalidAccessException;
 import com.java.challenge.java_challenge.error.RepositoryException;
 import com.java.challenge.java_challenge.repository.UserRepository;
-import com.java.challenge.java_challenge.service.RegularExpresionService;
+import com.java.challenge.java_challenge.service.ValidatorService;
 import com.java.challenge.java_challenge.service.UserService;
 import com.java.challenge.java_challenge.util.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -23,18 +23,18 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RegularExpresionService regularExpresionService;
+    private final ValidatorService validatorService;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper mapper;
 
     public UserServiceImpl (UserRepository userRepository,
-                            RegularExpresionService regularExpresionService,
+                            ValidatorService validatorService,
                             JwtTokenUtil jwtTokenUtil,
                             PasswordEncoder passwordEncoder,
                             ModelMapper mapper){
         this.userRepository = userRepository;
-        this.regularExpresionService = regularExpresionService;
+        this.validatorService = validatorService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.passwordEncoder = passwordEncoder;
         this.mapper = mapper;
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                     HttpStatus.CONFLICT
             );
         }
-        if(!regularExpresionService.regexEmail(userDTO.getEmail())){
+        if(!validatorService.regexEmail(userDTO.getEmail())){
             throw new IncorrectFormatException(
                     HttpStatus.BAD_REQUEST.toString(),
                     "Email has an incorrect format",
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             );
         }
 
-        if(!regularExpresionService.regexPassword(userDTO.getPassword())){
+        if(!validatorService.regexPassword(userDTO.getPassword())){
             throw new IncorrectFormatException(
                     HttpStatus.BAD_REQUEST.toString(),
                     "Password has an incorrect format",
