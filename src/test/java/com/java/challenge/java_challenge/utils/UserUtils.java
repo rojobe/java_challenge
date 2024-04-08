@@ -9,7 +9,7 @@ public class UserUtils {
         User user = new User();
         user.setUsername("rodrigobenito");
         user.setEmail("rodrigobenito@mail.com");
-        user.setPassword("a2asfGf6");
+        user.setPassword("a2asfGfdfdf4");
         return user;
     }
 
@@ -17,7 +17,7 @@ public class UserUtils {
         UserDTO userDTO = new UserDTO();
         userDTO.setUsername("rodrigobenito");
         userDTO.setEmail("rodrigobenito@mail.com");
-        userDTO.setPassword("a2asfGf6");
+        userDTO.setPassword("a2asfGfdfdf4");
         return userDTO;
     }
 
@@ -25,7 +25,7 @@ public class UserUtils {
         UserDTO userDTO = new UserDTO();
         userDTO.setUsername("rodrigobenito");
         userDTO.setEmail("rodrigobenitomail.com"); // falta arroba ( @ ) en el mail
-        userDTO.setPassword("a2asfGf6");
+        userDTO.setPassword("a2asfGfdfdf4");
         return userDTO;
     }
 
@@ -33,7 +33,7 @@ public class UserUtils {
         UserDTO userDTO = new UserDTO();
         userDTO.setUsername("rodrigobenito");
         userDTO.setEmail("rodrigobenito@mail.com");
-        userDTO.setPassword("a2aHsfGf6"); // el password contiene 2 mayusculas
+        userDTO.setPassword("a2asfGfdfdf4T"); // el password contiene 2 mayusculas
         return userDTO;
     }
 }

@@ -64,11 +64,11 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("rodrigobenito");
         user.setEmail("rodrigobenito@mail.com");
-        user.setPassword("a2asfGf6");
+        user.setPassword("a2asfGfdfdf4");
 
         when(repository.findByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(Optional.of(user));
         Optional<User> userFound = repository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-        assertThat(userFound).isEqualTo(user);
+        assertThat(userFound.get()).isEqualTo(user);
     }
 
     @Test
